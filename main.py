@@ -179,6 +179,7 @@ def level_1(nameusr):
 
 
 
+
 pygame.init() #Inicializa pygame
 
 #Definiendo parametros
