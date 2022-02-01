@@ -10,7 +10,11 @@ class Button():
 		if self.image is None:
 			self.image = self.text
 		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-		self.text_rect = self.text.get_rect(center=(self.x_pos + 60, self.y_pos - 65))
+		self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+		if self.image is not self.text:
+			self.text_rect = self.text.get_rect(center=(self.x_pos + 60, self.y_pos - 65))
+
+		
 
 	def update(self, screen):
 		if self.image is not None:

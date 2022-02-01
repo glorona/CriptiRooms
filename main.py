@@ -1,3 +1,4 @@
+from argparse import BooleanOptionalAction
 import pygame, sys #Importamos pygame y sys
 from button import Button
 
@@ -88,7 +89,40 @@ def user_name():
 
 
 def tutorial(nombre):
-    pass
+    screen.fill((24,34,76))
+    while True:
+        tutorial_mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get(): 
+            if event.type == pygame.QUIT: 
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_continuar.checkForInput(tutorial_mouse_pos):
+                    pass # funcion que da paso al juego principal
+                if button_retroceder.checkForInput(tutorial_mouse_pos):
+                    user_name()
+
+        pergaminoScale = pygame.transform.scale(pergaminotuto,(1280,720))
+        rect = pergaminoScale.get_rect()
+        rect = rect.move((150,100))
+
+        screen.blit(pergaminoScale, rect)
+
+        font = get_font(65)
+        texto_nombre = font.render(nombre,True,(0,0,0))
+        screen.blit(texto_nombre,(720,215))
+
+        #Reescalado de boton
+        
+        #Botones
+        button_continuar = Button(image = None, pos = (1450, 450),text_input="CONTINUAR", font = get_font(50), base_color = "White", hovering_color="Black")
+        button_retroceder = Button(image = None, pos = (150, 450),text_input="RETROCEDER", font = get_font(50), base_color = "White", hovering_color="Black")
+
+        for button in [button_continuar,button_retroceder]:
+            button.changeColor(tutorial_mouse_pos)
+            button.update(screen)
+       
+        pygame.display.update()
+        clock.tick(60)
 
 
 
