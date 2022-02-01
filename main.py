@@ -1,4 +1,3 @@
-from argparse import BooleanOptionalAction
 import pygame, sys #Importamos pygame y sys
 from button import Button
 
@@ -99,7 +98,7 @@ def tutorial(nombre):
                 if button_continuar.checkForInput(tutorial_mouse_pos):
                     pass # funcion que da paso al juego principal
                 if button_retroceder.checkForInput(tutorial_mouse_pos):
-                    user_name()
+                    main_menu()
 
         pergaminoScale = pygame.transform.scale(pergaminotuto,(1280,720))
         rect = pergaminoScale.get_rect()
