@@ -17,10 +17,16 @@ def main_menu():
             if event.type == pygame.QUIT: #if para saber si se salio el juego
 
                 sys.exit()
-        
-        screen.blit(bg,[0,0]) #set fondo de pantalla
-        button_e = Button(image = botone, pos = (800, 525),text_input="EMPEZAR", font = get_font(70), base_color = "White", hovering_color="#18224C") #agregar botones
-        button_s = Button(image = botons, pos = (800, 775),text_input="SALIR", font = get_font(70), base_color = "White", hovering_color="#18224C") #agregar botones
+
+        bgScale = pygame.transform.scale(bg,(1280,720))
+        botoneScale = pygame.transform.scale(botone,(320,160))
+        botonsScale = pygame.transform.scale(botons,(320,160))
+
+
+        screen.blit(bgScale, [0,0]) #set fondo de pantalla
+         
+        button_e = Button(image = botoneScale, pos = (640, 420),text_input="EMPEZAR", font = get_font(56), base_color = "White", hovering_color="#18224C") #agregar botones
+        button_s = Button(image = botonsScale, pos = (640, 620),text_input="SALIR", font = get_font(56), base_color = "White", hovering_color="#18224C") #agregar botones
 
 
 
@@ -61,13 +67,15 @@ def user_name():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_enter.checkForInput(menu_mouse_pos):
                     tutorial(nombre_user)#play() metodo para ingresar juego
-        screen.blit(bg,[0,0]) #set fondo de pantalla
-        font = get_font(50)
+
+        bgScale = pygame.transform.scale(bg,(1280,720))
+        screen.blit(bgScale,[0,0]) #set fondo de pantalla
+        font = get_font(40)
         textobienvenida = font.render("Bienvenido, inserta tu nombre!",True,(255,255,255))
-        screen.blit(textobienvenida,(475,450))
+        screen.blit(textobienvenida,(380,360))
         
          #BUTTON
-        button_enter = Button(image = botons, pos = (800, 750),text_input="VAMOS!", font = get_font(70), base_color = "White", hovering_color="#18224C") #agregar botones
+        button_enter = Button(image = botons, pos = (640, 600),text_input="VAMOS!", font = get_font(56), base_color = "White", hovering_color="#18224C") #agregar botones
 
         for button in [button_enter]:
             button.changeColor(menu_mouse_pos)
@@ -77,11 +85,11 @@ def user_name():
 
        
         #textbox
-        text_rect = pygame.Rect(650,550,300,50)
-        font = get_font(30)
+        text_rect = pygame.Rect(520,440,240,40)
+        font = get_font(24)
         texto = font.render(nombre_user,True,(255,255,255))
         pygame.draw.rect(screen,(255,255,255),text_rect,5)
-        screen.blit(texto, (text_rect.x + 7, text_rect.y + 7))
+        screen.blit(texto, (text_rect.x + 5.6, text_rect.y + 5.6))
 
        
         pygame.display.update()
@@ -101,21 +109,21 @@ def tutorial(nombre):
                 if button_retroceder.checkForInput(tutorial_mouse_pos):
                     user_name()
 
-        pergaminoScale = pygame.transform.scale(pergaminotuto,(1280,720))
+        pergaminoScale = pygame.transform.scale(pergaminotuto,(1024,576))
         rect = pergaminoScale.get_rect()
-        rect = rect.move((150,100))
+        rect = rect.move((120,80))
 
         screen.blit(pergaminoScale, rect)
 
-        font = get_font(65)
+        font = get_font(52)
         texto_nombre = font.render(nombre,True,(0,0,0))
-        screen.blit(texto_nombre,(720,215))
+        screen.blit(texto_nombre,(576,172))
 
         #Reescalado de boton
         
         #Botones
-        button_continuar = Button(image = None, pos = (1450, 450),text_input="CONTINUAR", font = get_font(50), base_color = "White", hovering_color="Black")
-        button_retroceder = Button(image = None, pos = (150, 450),text_input="RETROCEDER", font = get_font(50), base_color = "White", hovering_color="Black")
+        button_continuar = Button(image = None, pos = (1160, 360),text_input="CONTINUAR", font = get_font(40), base_color = "White", hovering_color="Black")
+        button_retroceder = Button(image = None, pos = (120, 360),text_input="RETROCEDER", font = get_font(40), base_color = "White", hovering_color="Black")
 
         for button in [button_continuar,button_retroceder]:
             button.changeColor(tutorial_mouse_pos)
@@ -127,12 +135,13 @@ def tutorial(nombre):
 
 
 
+
 pygame.init() #Inicializa pygame
 
 #Definiendo parametros
 clock = pygame.time.Clock()
 
-size = (1600,900) #define tamanio de ventana
+size = (1280,720) #define tamanio de ventana
 
 screen = pygame.display.set_mode(size) #creando nueva ventana
 
