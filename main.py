@@ -148,21 +148,23 @@ def level_1(nameusr):
 
                     sys.exit()
             #Cargar gui
-            font = get_font(70)
+            font = get_font(40)
             #bg
-            screen.blit(bgl1,[0,0])
+
+            bgl1Scale = pygame.transform.scale(bgl1,(1280,720))
+            screen.blit(bgl1Scale,[0,0])
             #texto l1
             textol1 = font.render("Nivel 1",True,(255,255,255))
-            screen.blit(textol1,(75,25))
+            screen.blit(textol1,(60,20))
             #timer
             #poner foto
             textotimer = font.render(str(seconds),True,(255,255,255))
-            screen.blit (textotimer,(750,25))
+            screen.blit (textotimer,(600,20))
 
             #cargar nivel
-            l1Scale = pygame.transform.scale(mapl1,(1000,700))
+            l1Scale = pygame.transform.scale(mapl1,(800,560))
 
-            screen.blit(l1Scale,[31,125])
+            screen.blit(l1Scale,[250,100])
 
 
 
