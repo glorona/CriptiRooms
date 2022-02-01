@@ -1,4 +1,4 @@
-import pygame, sys #Importamos pygame y sys
+import pygame, sys, time #Importamos pygame y sys
 from button import Button
 
 def get_font(size): # Returns Press-Start-2P in the desired size
@@ -137,11 +137,14 @@ def game_over():
 
 def level_1(nameusr):
     pygame.display.set_caption("Nivel 1")
-    start_ticks = pygame.time.get_ticks()
+    timestart =  int(round(time.time(),0))
+    minutes = 0
     while True:
         menu_mouse_pos = pygame.mouse.get_pos()
-        seconds = (pygame.time.get_ticks()-start_ticks)/1000 #calcula segundos
-        if seconds < 300:
+        timegame = int(round(time.time(),0))
+        dt = timegame - timestart
+        print(dt)
+        if minutes < 3:
             for event in pygame.event.get(): #recorriendo eventos
                 #print(event)
                 if event.type == pygame.QUIT: #if para saber si se salio el juego
@@ -158,8 +161,14 @@ def level_1(nameusr):
             screen.blit(textol1,(60,20))
             #timer
             #poner foto
-            textotimer = font.render(str(seconds),True,(255,255,255))
-            screen.blit (textotimer,(600,20))
+            if dt == 60:
+                minutes+=1
+                timestart = int(round(time.time(),0))
+        
+            stringtime = str(minutes) + ":" + str(dt)
+            textotimer = font.render(stringtime,True,(255,255,255))
+        
+            screen.blit (textotimer,(650,20))
 
             #cargar nivel
             l1Scale = pygame.transform.scale(mapl1,(800,560))
@@ -175,7 +184,7 @@ def level_1(nameusr):
             pygame.display.update()
             clock.tick(60)
         else:
-            game_over()
+            game_over(nameusr)
 
 
 
