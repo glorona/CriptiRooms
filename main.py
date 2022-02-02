@@ -178,6 +178,15 @@ def level_1(nameusr):
     player = Player(350,140)
     moving_sprites.add(player)
     steps = 2
+
+    canMove = True
+    isCollidingHint1 = False
+    isCollidingHint2 = False
+    isCollidingHint3 = False
+    hint1_rect = pygame.Rect(400,250,50,25)
+    hint2_rect = pygame.Rect(500,250,50,25)
+    hint3_rect = pygame.Rect(600,250,50,25)
+
     while True:
         menu_mouse_pos = pygame.mouse.get_pos()
         timegame = int(round(time.time(),0))
@@ -186,31 +195,58 @@ def level_1(nameusr):
             for event in pygame.event.get(): #recorriendo eventos
                 #print(event)
                 if event.type == pygame.QUIT: #if para saber si se salio el juego
-                
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT or event.key == ord('a'):
-                        player.control(-steps, 0)
-                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                        player.control(steps, 0)
-                    if event.key == pygame.K_UP or event.key == ord('w'):
-                        player.control(0, -steps)
-                    if event.key == pygame.K_DOWN or event.key == ord('w'):
-                        player.control(0, steps)
+                    
+                    if event.key == pygame.K_x:
+                        if player.rect.colliderect(hint1_rect):
+                            if isCollidingHint1:
+                                canMove = True
+                                isCollidingHint1 = False
+                            else:
+                                canMove = False
+                                isCollidingHint1 = True
+                        if player.rect.colliderect(hint2_rect):
+                            if isCollidingHint2:
+                                canMove = True
+                                isCollidingHint2 = False
+                            else:
+                                canMove = False
+                                isCollidingHint2 = True
+                        if player.rect.colliderect(hint3_rect):
+                            if isCollidingHint3:
+                                canMove = True
+                                isCollidingHint3 = False
+                            else:
+                                canMove = False
+                                isCollidingHint3 = True
+
+                    if canMove:
+                        if event.key == pygame.K_LEFT:
+                            player.control(-steps, 0)
+                        if event.key == pygame.K_RIGHT:
+                            player.control(steps, 0)
+                        if event.key == pygame.K_UP:
+                            player.control(0, -steps)
+                        if event.key == pygame.K_DOWN:
+                            player.control(0, steps)
+
+
 
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT or event.key == ord('a'):
-                        player.control(steps, 0)
-                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                        player.control(-steps, 0)
-                    if event.key == pygame.K_UP or event.key == ord('w'):
-                        player.control(0, steps)
-                    if event.key == pygame.K_DOWN or event.key == ord('w'):
-                        player.control(0, -steps)
+                    if canMove:
+                        if event.key == pygame.K_LEFT:
+                            player.control(steps, 0)
+                        if event.key == pygame.K_RIGHT:
+                            player.control(-steps, 0)
+                        if event.key == pygame.K_UP:
+                            player.control(0, steps)
+                        if event.key == pygame.K_DOWN:
+                            player.control(0, -steps)
+                
             #Cargar gui
             font = get_font(40)
             #bg
-
             bgl1Scale = pygame.transform.scale(bgl1,(1280,720))
             screen.blit(bgl1Scale,[0,0])
             #texto l1
@@ -236,7 +272,21 @@ def level_1(nameusr):
             player.update()
             moving_sprites.draw(screen)
             
+            #hints
+            hint1 = pygame.transform.scale(minipergamino,(50,50))
+            hint2 = hint1
+            hint3 = hint1
+            
+            screen.blit(hint1,hint1_rect)
+            screen.blit(hint2,hint2_rect)
+            screen.blit(hint3,hint3_rect)
 
+            if isCollidingHint1:
+                screen.blit(minipergamino,(200,50))  # cambiar las imagenes de los pergaminos aqui, en vez de minipergamino colocar la del hint real
+            if isCollidingHint2:
+                screen.blit(minipergamino,(200,50))
+            if isCollidingHint3:
+                screen.blit(minipergamino,(200,50))
 
 
 
@@ -276,6 +326,8 @@ botons = pygame.image.load("ImagesDiscretas/botons.png") # cargar boton salida..
 pergaminotuto = pygame.image.load("ImagesDiscretas/pergaminotuto.png") #carga pergamino
 
 pergaminofinal = pygame.image.load("ImagesDiscretas/gameover.png")
+
+minipergamino = pygame.image.load("ImagesDiscretas/hint.png")
 
 
 #Programa
