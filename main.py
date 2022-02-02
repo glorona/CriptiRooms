@@ -175,7 +175,7 @@ def level_1(nameusr):
     timestart =  int(round(time.time(),0))
     minutes = 0
     moving_sprites = pygame.sprite.Group()
-    player = Player(350,140)
+    player = Player(700,500)
     moving_sprites.add(player)
     steps = 2
 
@@ -183,9 +183,20 @@ def level_1(nameusr):
     isCollidingHint1 = False
     isCollidingHint2 = False
     isCollidingHint3 = False
-    hint1_rect = pygame.Rect(400,250,50,25)
-    hint2_rect = pygame.Rect(500,250,50,25)
-    hint3_rect = pygame.Rect(600,250,50,25)
+    isCollidingLock = False
+    hint1_rect = pygame.Rect(380,180,50,25)
+    hint2_rect = pygame.Rect(880,567,50,25)
+    hint3_rect = pygame.Rect(365,364,50,25)
+    lock_rect = pygame.Rect(1015,330,50,25)
+
+    #pared
+    wall = pygame.Rect(250,100,800,35)
+    wall2 = pygame.Rect(250,100,35,560)
+    wall3 = pygame.Rect(250,645,800,35)
+    wall4 = pygame.Rect(1025,100,35,560)
+    wall5 = pygame.Rect(275,255,300,85)
+
+
 
     #14 rectangulos de obstaculos
     obstacle_r1 = pygame.Rect(337,180,40,32) #cabeza
@@ -204,7 +215,7 @@ def level_1(nameusr):
     obstacle_r14 = pygame.Rect(840,567,36,36) #piedra derecha abajo
 
     obstacles = [obstacle_r1,obstacle_r2,obstacle_r3,obstacle_r4,obstacle_r5,obstacle_r6
-    ,obstacle_r7,obstacle_r8,obstacle_r9,obstacle_r10,obstacle_r11,obstacle_r12,obstacle_r13,obstacle_r14]
+    ,obstacle_r7,obstacle_r8,obstacle_r9,obstacle_r10,obstacle_r11,obstacle_r12,obstacle_r13,obstacle_r14, wall,wall2,wall3,wall4,wall5]
 
     rect = [hint1_rect]
 
@@ -252,6 +263,13 @@ def level_1(nameusr):
                             else:
                                 canMove = False
                                 isCollidingHint3 = True
+                        if player.rect.colliderect(lock_rect):
+                            if isCollidingLock:
+                                canMove = True
+                                isCollidingLock = False
+                            else:
+                                canMove = False
+                                isCollidingLock = True
 
                     
 
@@ -280,33 +298,8 @@ def level_1(nameusr):
             screen.blit(l1Scale,[250,100])
 
             #cargar jugador
-
-            
-
-            #player.update()
             moving_sprites.draw(screen)
-            #pygame.draw.rect(screen,(255,255,255),player.rect, 3) #hitbox jugador
-
-            #cargar hitboxes
-
-
-            #quitar opacidad luego
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r1,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r2,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r3,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r4,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r5,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r6,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r7,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r8,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r9,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r10,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r11,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r12,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r13,3)
-            # pygame.draw.rect(screen,(255,255,255),obstacle_r14,3)
-
-            #pendiente crear eventos de colision
+        
             
 
 
@@ -316,20 +309,26 @@ def level_1(nameusr):
 
             
             #hints
-            hint1 = pygame.transform.scale(minipergamino,(50,50))
+            hint1 = pygame.transform.scale(minipergamino,(30,30))
             hint2 = hint1
             hint3 = hint1
+            #chal 
+            locks = pygame.transform.scale(lock,(40,40))
             
             screen.blit(hint1,hint1_rect)
             screen.blit(hint2,hint2_rect)
             screen.blit(hint3,hint3_rect)
+            screen.blit(locks,lock_rect)
 
             if isCollidingHint1:
-                screen.blit(minipergamino,(200,50))  # cambiar las imagenes de los pergaminos aqui, en vez de minipergamino colocar la del hint real
+                screen.blit(minipergamino1,(250,2))  # cambiar las imagenes de los pergaminos aqui, en vez de minipergamino colocar la del hint real
             if isCollidingHint2:
-                screen.blit(minipergamino,(200,50))
+                screen.blit(minipergamino2,(250,2))
             if isCollidingHint3:
-                screen.blit(minipergamino,(200,50))
+                screen.blit(minipergamino3,(250,2))
+            if isCollidingLock: #agregar condicion cantidad pistas
+                screen.blit(chal1,(250,2))
+
 
 
 
@@ -370,6 +369,15 @@ pergaminofinal = pygame.image.load("ImagesDiscretas/gameover.png")
 
 minipergamino = pygame.image.load("ImagesDiscretas/hint.png")
 
+minipergamino1 = pygame.image.load("ImagesDiscretas/hint1.png")
+
+minipergamino2 = pygame.image.load("ImagesDiscretas/hint2.png")
+
+minipergamino3 = pygame.image.load("ImagesDiscretas/hint3.png")
+
+chal1 = pygame.image.load("ImagesDiscretas/desafio1.png")
+
+lock = pygame.image.load("ImagesDiscretas/lock1.png")
 
 #Programa
 main_menu() #corre menu principal
