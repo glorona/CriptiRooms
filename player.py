@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.current_sprite = 0
         for i in range(1, 21):
             img = pygame.image.load(os.path.join('ImagesDiscretas', 'hero' + str(i) + '.png')).convert()
-            imgScale = pygame.transform.scale(img,(32,64))
+            imgScale = pygame.transform.scale(img,(32,40))
             self.sprites.append(imgScale)
             imgScale.convert_alpha()  # optimise alpha
             imgScale.set_colorkey((0,0,0))  # set alpha

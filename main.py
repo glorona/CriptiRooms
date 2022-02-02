@@ -235,6 +235,50 @@ def level_1(nameusr):
             #cargar jugador
             player.update()
             moving_sprites.draw(screen)
+            pygame.draw.rect(screen,(255,255,255),player.rect, 3) #hitbox jugador
+
+            #cargar hitboxes
+            #14 rectangulos de obstaculos
+            obstacle_r1 = pygame.Rect(337,180,40,32) #cabeza
+            obstacle_r2 = pygame.Rect(659,117,36,41) #chimenea
+            obstacle_r3 = pygame.Rect(775,165,36,36) #piedra 
+            obstacle_r4 = pygame.Rect(870,187,37,34) #pulpo
+            obstacle_r5 = pygame.Rect(946,180,38,21) #tronco arriba
+            obstacle_r6 = pygame.Rect(980,247,34,50) #pilar sup
+            obstacle_r7 = pygame.Rect(980,410,34,50) #pilar inf
+            obstacle_r8 = pygame.Rect(318,362,34,50) #pilar latizq
+            obstacle_r9 = pygame.Rect(532,362,34,50) #pilar latder
+            obstacle_r10 = pygame.Rect(318,500,36,36) #piedra pilar
+            obstacle_r11 = pygame.Rect(468,528,38,21) #tronco pilar
+            obstacle_r12 = pygame.Rect(965,487,21,38) #tronco derecha arriba
+            obstacle_r13 = pygame.Rect(965,585,21,36) #tronco derecha abajo
+            obstacle_r14 = pygame.Rect(840,567,36,36) #piedra derecha abajo
+
+
+            #quitar opacidad luego
+            pygame.draw.rect(screen,(255,255,255),obstacle_r1,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r2,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r3,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r4,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r5,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r6,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r7,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r8,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r9,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r10,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r11,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r12,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r13,3)
+            pygame.draw.rect(screen,(255,255,255),obstacle_r14,3)
+
+            #pendiente crear eventos de colision
+            
+
+
+
+
+
+
             
 
 
