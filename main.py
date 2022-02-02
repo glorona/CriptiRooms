@@ -1,6 +1,6 @@
 import pygame, sys, time #Importamos pygame y sys
 from button import Button
-
+from player import Player
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("RecursosDiscretas/font.ttf", size)
 
@@ -174,17 +174,39 @@ def level_1(nameusr):
     pygame.display.set_caption("Nivel 1")
     timestart =  int(round(time.time(),0))
     minutes = 0
+    moving_sprites = pygame.sprite.Group()
+    player = Player(350,140)
+    moving_sprites.add(player)
+    steps = 2
     while True:
         menu_mouse_pos = pygame.mouse.get_pos()
         timegame = int(round(time.time(),0))
         dt = timegame - timestart
-        print(dt)
         if minutes < 3:
             for event in pygame.event.get(): #recorriendo eventos
                 #print(event)
                 if event.type == pygame.QUIT: #if para saber si se salio el juego
-
+                
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT or event.key == ord('a'):
+                        player.control(-steps, 0)
+                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                        player.control(steps, 0)
+                    if event.key == pygame.K_UP or event.key == ord('w'):
+                        player.control(0, -steps)
+                    if event.key == pygame.K_DOWN or event.key == ord('w'):
+                        player.control(0, steps)
+
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT or event.key == ord('a'):
+                        player.control(steps, 0)
+                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                        player.control(-steps, 0)
+                    if event.key == pygame.K_UP or event.key == ord('w'):
+                        player.control(0, steps)
+                    if event.key == pygame.K_DOWN or event.key == ord('w'):
+                        player.control(0, -steps)
             #Cargar gui
             font = get_font(40)
             #bg
@@ -210,6 +232,10 @@ def level_1(nameusr):
 
             screen.blit(l1Scale,[250,100])
 
+            #cargar jugador
+            player.update()
+            moving_sprites.draw(screen)
+            
 
 
 
