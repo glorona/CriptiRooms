@@ -132,8 +132,43 @@ def tutorial(nombre):
         clock.tick(60)
 
 
-def game_over():
-    pass
+def game_over(nombre, niveles = 0, pistas = 0):
+    screen.fill((24,34,76))
+    while True:
+        gameover_mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get(): 
+            if event.type == pygame.QUIT: 
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_continuar.checkForInput(gameover_mouse_pos):
+                    user_name() 
+                if button_salir.checkForInput(gameover_mouse_pos):
+                    sys.exit()
+
+        screen.blit(pergaminofinal, [0,0])
+
+        font = get_font(52)
+
+        texto_nombre = font.render(nombre,True,(0,0,0))
+        texto_niveles = font.render(str(niveles),True,(0,0,0))
+        texto_pistas = font.render(str(pistas),True,(0,0,0))
+
+        screen.blit(texto_nombre,(800,200))
+        screen.blit(texto_niveles,(800,325))
+        screen.blit(texto_pistas,(800,445))
+
+        #Botones
+        button_continuar = Button(image = None, pos = (750, 565),text_input="INTENTAR DE NUEVO", font = get_font(40), base_color = "#3f8c48", hovering_color="#18224C")
+        button_salir = Button(image = None, pos = (450, 565),text_input="SALIR", font = get_font(40), base_color = "#993f3f", hovering_color="#18224C")
+
+        for button in [button_continuar,button_salir]:
+            button.changeColor(gameover_mouse_pos)
+            button.update(screen)
+       
+        pygame.display.update()
+        clock.tick(60)
+
+
 
 def level_1(nameusr):
     pygame.display.set_caption("Nivel 1")
@@ -178,8 +213,6 @@ def level_1(nameusr):
 
 
 
-            
-
 
             pygame.display.update()
             clock.tick(60)
@@ -216,7 +249,8 @@ botons = pygame.image.load("ImagesDiscretas/botons.png") # cargar boton salida..
 
 pergaminotuto = pygame.image.load("ImagesDiscretas/pergaminotuto.png") #carga pergamino
 
+pergaminofinal = pygame.image.load("ImagesDiscretas/gameover.png")
+
 
 #Programa
-
 main_menu() #corre menu principal
