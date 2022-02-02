@@ -12,9 +12,7 @@ def main_menu():
     while True:
         menu_mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get(): #recorriendo eventos
-            print(event)
             if event.type == pygame.QUIT: #if para saber si se salio el juego
-
                 sys.exit()
 
         bgScale = pygame.transform.scale(bg,(1280,720))
@@ -96,6 +94,7 @@ def user_name():
 
 
 def tutorial(nombre):
+    pygame.key.set_repeat()
     screen.fill((24,34,76))
     while True:
         tutorial_mouse_pos = pygame.mouse.get_pos()
@@ -171,6 +170,7 @@ def game_over(nombre, niveles = 0, pistas = 0):
 
 
 def level_1(nameusr):
+    #pygame.key.set_repeat(15,5)
     pygame.display.set_caption("Nivel 1")
     timestart =  int(round(time.time(),0))
     minutes = 0
@@ -212,13 +212,24 @@ def level_1(nameusr):
         menu_mouse_pos = pygame.mouse.get_pos()
         timegame = int(round(time.time(),0))
         dt = timegame - timestart
+        keyP = pygame.key.get_pressed()
         if minutes < 3:
+
+            if canMove:
+                if (keyP[pygame.K_LEFT]) and not player.checkCollision(obstacles,steps, 0):
+                    player.update(-steps, 0)
+                if (keyP[pygame.K_RIGHT]) and not player.checkCollision(obstacles,-steps, 0):
+                    player.update(steps, 0)
+                if (keyP[pygame.K_UP]) and not player.checkCollision(obstacles,0, steps):
+                    player.update(0, -steps)
+                if (keyP[pygame.K_DOWN]) and not player.checkCollision(obstacles,0, -steps):
+                    player.update(0, steps)
+
             for event in pygame.event.get(): #recorriendo eventos
                 #print(event)
                 if event.type == pygame.QUIT: #if para saber si se salio el juego
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    
                     if event.key == pygame.K_x:
                         if player.rect.colliderect(hint1_rect):
                             if isCollidingHint1:
@@ -242,29 +253,8 @@ def level_1(nameusr):
                                 canMove = False
                                 isCollidingHint3 = True
 
-                    if canMove:
-                        if (event.key == pygame.K_LEFT) and not player.checkCollision(obstacles,steps, 0):
-                            player.update(-steps, 0)
-                        if (event.key == pygame.K_RIGHT) and not player.checkCollision(obstacles,-steps, 0):
-                            player.update(steps, 0)
-                        if (event.key == pygame.K_UP) and not player.checkCollision(obstacles,0, steps):
-                            player.update(0, -steps)
-                        if (event.key == pygame.K_DOWN) and not player.checkCollision(obstacles,0, -steps):
-                            player.update(0, steps)
+                    
 
-
-                '''
-                if event.type == pygame.KEYUP:
-                    if canMove:
-                        if (event.key == pygame.K_LEFT) and not player.checkCollision(obstacles,steps, 0):
-                            player.control(steps, 0)
-                        if (event.key == pygame.K_RIGHT) and not player.checkCollision(obstacles,-steps, 0):
-                            player.control(-steps, 0)
-                        if (event.key == pygame.K_UP) and not player.checkCollision(obstacles,0, steps):
-                            player.control(0, steps)
-                        if (event.key == pygame.K_DOWN) and not player.checkCollision(obstacles,0, -steps):
-                            player.control(0, -steps)
-                '''
             #Cargar gui
             font = get_font(40)
             #bg
@@ -295,26 +285,26 @@ def level_1(nameusr):
 
             #player.update()
             moving_sprites.draw(screen)
-            pygame.draw.rect(screen,(255,255,255),player.rect, 3) #hitbox jugador
+            #pygame.draw.rect(screen,(255,255,255),player.rect, 3) #hitbox jugador
 
             #cargar hitboxes
 
 
             #quitar opacidad luego
-            pygame.draw.rect(screen,(255,255,255),obstacle_r1,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r2,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r3,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r4,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r5,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r6,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r7,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r8,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r9,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r10,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r11,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r12,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r13,3)
-            pygame.draw.rect(screen,(255,255,255),obstacle_r14,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r1,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r2,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r3,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r4,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r5,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r6,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r7,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r8,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r9,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r10,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r11,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r12,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r13,3)
+            # pygame.draw.rect(screen,(255,255,255),obstacle_r14,3)
 
             #pendiente crear eventos de colision
             
@@ -361,8 +351,6 @@ clock = pygame.time.Clock()
 size = (1280,720) #define tamanio de ventana
 
 screen = pygame.display.set_mode(size) #creando nueva ventana
-
-pygame.key.set_repeat(15)
 
 #Recursos del juego
 

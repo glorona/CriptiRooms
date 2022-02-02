@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         self.sprites = []
         self.current_sprite = 0
         for i in range(1, 21):
-            img = pygame.image.load(os.path.join('ImagesDiscretas', 'hero' + str(i) + '.png')).convert()
+            img = pygame.image.load(os.path.join('ImagesDiscretas', 'hero' + str(i) + '.png'))
             imgScale = pygame.transform.scale(img,(32,40))
             self.sprites.append(imgScale)
             imgScale.convert_alpha()  # optimise alpha
