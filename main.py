@@ -12,7 +12,7 @@ def main_menu():
     while True:
         menu_mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get(): #recorriendo eventos
-            #print(event)
+            print(event)
             if event.type == pygame.QUIT: #if para saber si se salio el juego
 
                 sys.exit()
@@ -187,6 +187,27 @@ def level_1(nameusr):
     hint2_rect = pygame.Rect(500,250,50,25)
     hint3_rect = pygame.Rect(600,250,50,25)
 
+    #14 rectangulos de obstaculos
+    obstacle_r1 = pygame.Rect(337,180,40,32) #cabeza
+    obstacle_r2 = pygame.Rect(659,117,36,41) #chimenea
+    obstacle_r3 = pygame.Rect(775,165,36,36) #piedra 
+    obstacle_r4 = pygame.Rect(870,187,37,34) #pulpo
+    obstacle_r5 = pygame.Rect(946,180,38,21) #tronco arriba
+    obstacle_r6 = pygame.Rect(980,247,34,50) #pilar sup
+    obstacle_r7 = pygame.Rect(980,410,34,50) #pilar inf
+    obstacle_r8 = pygame.Rect(318,362,34,50) #pilar latizq
+    obstacle_r9 = pygame.Rect(532,362,34,50) #pilar latder
+    obstacle_r10 = pygame.Rect(318,500,36,36) #piedra pilar
+    obstacle_r11 = pygame.Rect(468,528,38,21) #tronco pilar
+    obstacle_r12 = pygame.Rect(965,487,21,38) #tronco derecha arriba
+    obstacle_r13 = pygame.Rect(965,585,21,36) #tronco derecha abajo
+    obstacle_r14 = pygame.Rect(840,567,36,36) #piedra derecha abajo
+
+    obstacles = [obstacle_r1,obstacle_r2,obstacle_r3,obstacle_r4,obstacle_r5,obstacle_r6
+    ,obstacle_r7,obstacle_r8,obstacle_r9,obstacle_r10,obstacle_r11,obstacle_r12,obstacle_r13,obstacle_r14]
+
+    rect = [hint1_rect]
+
     while True:
         menu_mouse_pos = pygame.mouse.get_pos()
         timegame = int(round(time.time(),0))
@@ -222,28 +243,28 @@ def level_1(nameusr):
                                 isCollidingHint3 = True
 
                     if canMove:
-                        if event.key == pygame.K_LEFT:
-                            player.control(-steps, 0)
-                        if event.key == pygame.K_RIGHT:
-                            player.control(steps, 0)
-                        if event.key == pygame.K_UP:
-                            player.control(0, -steps)
-                        if event.key == pygame.K_DOWN:
-                            player.control(0, steps)
+                        if (event.key == pygame.K_LEFT) and not player.checkCollision(obstacles,steps, 0):
+                            player.update(-steps, 0)
+                        if (event.key == pygame.K_RIGHT) and not player.checkCollision(obstacles,-steps, 0):
+                            player.update(steps, 0)
+                        if (event.key == pygame.K_UP) and not player.checkCollision(obstacles,0, steps):
+                            player.update(0, -steps)
+                        if (event.key == pygame.K_DOWN) and not player.checkCollision(obstacles,0, -steps):
+                            player.update(0, steps)
 
 
-
+                '''
                 if event.type == pygame.KEYUP:
                     if canMove:
-                        if event.key == pygame.K_LEFT:
+                        if (event.key == pygame.K_LEFT) and not player.checkCollision(obstacles,steps, 0):
                             player.control(steps, 0)
-                        if event.key == pygame.K_RIGHT:
+                        if (event.key == pygame.K_RIGHT) and not player.checkCollision(obstacles,-steps, 0):
                             player.control(-steps, 0)
-                        if event.key == pygame.K_UP:
+                        if (event.key == pygame.K_UP) and not player.checkCollision(obstacles,0, steps):
                             player.control(0, steps)
-                        if event.key == pygame.K_DOWN:
+                        if (event.key == pygame.K_DOWN) and not player.checkCollision(obstacles,0, -steps):
                             player.control(0, -steps)
-                
+                '''
             #Cargar gui
             font = get_font(40)
             #bg
@@ -269,26 +290,14 @@ def level_1(nameusr):
             screen.blit(l1Scale,[250,100])
 
             #cargar jugador
-            player.update()
+
+            
+
+            #player.update()
             moving_sprites.draw(screen)
             pygame.draw.rect(screen,(255,255,255),player.rect, 3) #hitbox jugador
 
             #cargar hitboxes
-            #14 rectangulos de obstaculos
-            obstacle_r1 = pygame.Rect(337,180,40,32) #cabeza
-            obstacle_r2 = pygame.Rect(659,117,36,41) #chimenea
-            obstacle_r3 = pygame.Rect(775,165,36,36) #piedra 
-            obstacle_r4 = pygame.Rect(870,187,37,34) #pulpo
-            obstacle_r5 = pygame.Rect(946,180,38,21) #tronco arriba
-            obstacle_r6 = pygame.Rect(980,247,34,50) #pilar sup
-            obstacle_r7 = pygame.Rect(980,410,34,50) #pilar inf
-            obstacle_r8 = pygame.Rect(318,362,34,50) #pilar latizq
-            obstacle_r9 = pygame.Rect(532,362,34,50) #pilar latder
-            obstacle_r10 = pygame.Rect(318,500,36,36) #piedra pilar
-            obstacle_r11 = pygame.Rect(468,528,38,21) #tronco pilar
-            obstacle_r12 = pygame.Rect(965,487,21,38) #tronco derecha arriba
-            obstacle_r13 = pygame.Rect(965,585,21,36) #tronco derecha abajo
-            obstacle_r14 = pygame.Rect(840,567,36,36) #piedra derecha abajo
 
 
             #quitar opacidad luego
@@ -353,7 +362,7 @@ size = (1280,720) #define tamanio de ventana
 
 screen = pygame.display.set_mode(size) #creando nueva ventana
 
-
+pygame.key.set_repeat(15)
 
 #Recursos del juego
 

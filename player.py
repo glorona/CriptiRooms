@@ -22,11 +22,28 @@ class Player(pygame.sprite.Sprite):
         self.movex += x
         self.movey += y
 
-    def update(self):
-        self.rect.x = self.rect.x + self.movex
-        self.rect.y = self.rect.y + self.movey
+    def checkCollision(self, obstacles, x, y):
+        for obstacle in obstacles:
+            if obstacle.colliderect(self.rect.x, self.rect.y + y, self.rect.width, self.rect.height):
+                self.update(0,-y*2)
+                return True
+            if obstacle.colliderect(self.rect.x, self.rect.y - y, self.rect.width, self.rect.height):
+                self.update(0,y*2)
+                return True
+            if obstacle.colliderect(self.rect.x + x, self.rect.y, self.rect.width, self.rect.height):
+                self.update(-x*2,0)
+                return True
+            if obstacle.colliderect(self.rect.x - x, self.rect.y, self.rect.width, self.rect.height):
+                self.update(x*2,0)
+                return True
+        return False
 
-        if self.movex < 0:
+
+    def update(self,stepsx,stepsy):
+        self.rect.x = self.rect.x + stepsx
+        self.rect.y = self.rect.y + stepsy
+
+        if stepsx < 0:
             self.current_sprite = 6
             self.current_sprite += 0.01
             if self.current_sprite >= 8:
@@ -34,7 +51,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.sprites[int(self.current_sprite)]
 
         # moving right
-        if self.movex > 0:
+        if stepsx > 0:
             self.current_sprite = 18
             self.current_sprite += 0.01
             if self.current_sprite >= 20:
@@ -42,7 +59,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.sprites[int(self.current_sprite)]
 
         # moving up
-        if self.movey > 0:
+        if stepsy > 0:
             self.current_sprite = 9
             self.current_sprite += 0.01
             if self.current_sprite >= 11:
@@ -50,9 +67,11 @@ class Player(pygame.sprite.Sprite):
             self.image = self.sprites[int(self.current_sprite)]
 
         # moving down
-        if self.movey < 0:
+        if stepsy < 0:
             self.current_sprite = 3
             self.current_sprite += 0.01
             if self.current_sprite >= 5:
                 self.current_sprite = 3
             self.image = self.sprites[int(self.current_sprite)]
+
+    
