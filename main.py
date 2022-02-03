@@ -228,8 +228,12 @@ def level_1(nameusr):
     ertime = 0
     respu = ""
     respuesta = ""
+
+    # Ventana Ayuda
+    ayudaIsVisible = False 
+
     while True:
-        menu_mouse_pos = pygame.mouse.get_pos()
+        lvl_mouse_pos = pygame.mouse.get_pos()
         timegame = int(round(time.time(),0))
         dt = timegame - timestart
         keyP = pygame.key.get_pressed()
@@ -249,6 +253,16 @@ def level_1(nameusr):
                 #print(event)
                 if event.type == pygame.QUIT: #if para saber si se salio el juego
                     sys.exit()
+                # Ventana de ayuda, Interaccion
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if button_ayuda.checkForInput(lvl_mouse_pos):
+                        if ayudaIsVisible:
+                            ayudaIsVisible = False
+                        else:
+                            ayudaIsVisible = True
+                    if button_closeAyuda.checkForInput(lvl_mouse_pos):
+                        ayudaIsVisible = False
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
                         respu = respu[:-1]
@@ -351,6 +365,7 @@ def level_1(nameusr):
             moving_sprites.draw(screen)
         
             
+            
 
 
             #textbox
@@ -415,6 +430,19 @@ def level_1(nameusr):
                 ertime-=1
 
 
+            #Ventana de ayuda, ajuste de posicion de botones
+            button_ayuda = Button(image = None, pos = (150, 565),text_input="Acerca de", font = get_font(40), base_color = "White", hovering_color="#18224C")
+            button_closeAyuda = Button(image = None, pos = (900, 100),text_input="X", font = get_font(40), base_color = "#993f3f", hovering_color="#18224C")
+
+            if not ayudaIsVisible:
+                button_ayuda.changeColor(lvl_mouse_pos)
+                button_ayuda.update(screen)
+            else:
+                screen.blit(minipergamino,(250,2)) # Colocar Pergamino con Teoria aqui
+                button_ayuda.changeColor(lvl_mouse_pos)
+                button_ayuda.update(screen)
+                button_closeAyuda.changeColor(lvl_mouse_pos)
+                button_closeAyuda.update(screen)
 
 
             pygame.display.update()
