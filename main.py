@@ -431,14 +431,14 @@ def level_1(nameusr):
 
 
             #Ventana de ayuda, ajuste de posicion de botones
-            button_ayuda = Button(image = None, pos = (150, 565),text_input="Acerca de", font = get_font(40), base_color = "White", hovering_color="#18224C")
+            button_ayuda = Button(image = None, pos = (150, 565),text_input="Ayuda", font = get_font(40), base_color = "White", hovering_color="#18224C")
             button_closeAyuda = Button(image = None, pos = (900, 100),text_input="X", font = get_font(40), base_color = "#993f3f", hovering_color="#18224C")
 
             if not ayudaIsVisible:
                 button_ayuda.changeColor(lvl_mouse_pos)
                 button_ayuda.update(screen)
             else:
-                screen.blit(minipergamino,(250,2)) # Colocar Pergamino con Teoria aqui
+                screen.blit(pergamorse,(250,2)) # Colocar Pergamino con Teoria aqui
                 button_ayuda.changeColor(lvl_mouse_pos)
                 button_ayuda.update(screen)
                 button_closeAyuda.changeColor(lvl_mouse_pos)
@@ -710,14 +710,14 @@ def level_2(nameusr, prevPoints):
                 ertime-=1
 
             #Ventana de ayuda, ajuste de posicion de botones
-            button_ayuda = Button(image = None, pos = (150, 565),text_input="Acerca de", font = get_font(40), base_color = "White", hovering_color="#18224C")
+            button_ayuda = Button(image = None, pos = (150, 565),text_input="Ayuda", font = get_font(40), base_color = "White", hovering_color="#18224C")
             button_closeAyuda = Button(image = None, pos = (900, 100),text_input="X", font = get_font(40), base_color = "#993f3f", hovering_color="#18224C")
 
             if not ayudaIsVisible:
                 button_ayuda.changeColor(lvl_mouse_pos)
                 button_ayuda.update(screen)
             else:
-                screen.blit(minipergamino,(250,2)) # Colocar Pergamino con Teoria aqui
+                screen.blit(pergahuff,(250,2)) # Colocar Pergamino con Teoria aqui
                 button_ayuda.changeColor(lvl_mouse_pos)
                 button_ayuda.update(screen)
                 button_closeAyuda.changeColor(lvl_mouse_pos)
@@ -785,6 +785,10 @@ botons = pygame.image.load("ImagesDiscretas/botons.png") # cargar boton salida..
 
 pergaminotuto = pygame.image.load("ImagesDiscretas/pergaminotuto.png") #carga pergamino
 
+pergahuff  = pygame.image.load("ImagesDiscretas/huffcode.png")
+
+pergamorse = pygame.image.load("ImagesDiscretas/morsecode.png")
+
 pergaminofinal = pygame.image.load("ImagesDiscretas/gameover.png")
 
 minipergamino = pygame.image.load("ImagesDiscretas/hint.png")
@@ -825,4 +829,5 @@ error = pygame.image.load("ImagesDiscretas/x.png")
 nclear = pygame.image.load("ImagesDiscretas/npas.png")
 
 #Programa
+
 main_menu() #corre menu principal
