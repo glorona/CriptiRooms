@@ -271,7 +271,7 @@ def level_1(nameusr):
                             elif isCollidingLock:
                                 print("Nivel Completado")
                                 chal1r = True
-                                stageclear()
+                                stageclear(nameusr, points)
                         else:
                             if isCollidingHint1 or isCollidingHint2 or isCollidingHint3 or isCollidingLock:
                                 ertime = 100
@@ -422,9 +422,37 @@ def level_1(nameusr):
         else:
             game_over(nameusr,1,points)
 
-
-def stageclear():
+def level_2(nameusr, prevPoints):
     pass
+
+
+def stageclear(nombre, points):
+    screen.fill((24,34,76))
+    while True:
+        gameover_mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get(): 
+            if event.type == pygame.QUIT: 
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_continuar.checkForInput(gameover_mouse_pos):
+                    level_2(nombre, points)
+                if button_salir.checkForInput(gameover_mouse_pos):
+                    sys.exit()
+
+        screen.blit(nclear, [0,0])
+
+        font = get_font(52)
+
+        #Botones
+        button_continuar = Button(image = None, pos = (750, 565),text_input="CONTINUAR", font = get_font(40), base_color = "#3f8c48", hovering_color="#18224C")
+        button_salir = Button(image = None, pos = (450, 565),text_input="SALIR", font = get_font(40), base_color = "#993f3f", hovering_color="#18224C")
+
+        for button in [button_continuar,button_salir]:
+            button.changeColor(gameover_mouse_pos)
+            button.update(screen)
+       
+        pygame.display.update()
+        clock.tick(60)
 
 
 
