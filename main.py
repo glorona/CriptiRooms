@@ -698,7 +698,7 @@ def level_2(nameusr, prevPoints):
             pygame.display.update()
             clock.tick(60)
         else:
-            game_over(nameusr,1,points)
+            game_over(nameusr,1,prevPoints)
 
 
 def stageclear(nombre, points):
