@@ -423,7 +423,254 @@ def level_1(nameusr):
             game_over(nameusr,1,points)
 
 def level_2(nameusr, prevPoints):
-    pass
+    #pygame.key.set_repeat(15,5)
+    pygame.display.set_caption("Nivel 2")
+    timestart =  int(round(time.time(),0))
+    minutes = 0
+    moving_sprites = pygame.sprite.Group()
+    player = Player(700,500)
+    moving_sprites.add(player)
+    steps = 2
+
+    canMove = True
+    isCollidingHint1 = False
+    isCollidingHint2 = False
+    isCollidingHint3 = False
+    isCollidingLock = False
+    hint1r = False
+    hint2r = False
+    hint3r = False
+    chal1r = False
+
+    hint1_rect = pygame.Rect(500,170,50,25)
+    hint2_rect = pygame.Rect(870,220,50,25)
+    hint3_rect = pygame.Rect(550,575,50,25)
+    lock_rect = pygame.Rect(880,625,50,25)
+
+    #pared
+    wall = pygame.Rect(250,100,800,35)
+    wall2 = pygame.Rect(250,100,35,560)
+    wall3 = pygame.Rect(250,645,800,35)
+    wall4 = pygame.Rect(1025,100,35,560)
+    wall5 = pygame.Rect(675,125,45,300)
+
+
+
+    #14 rectangulos de obstaculos
+    obstacle_r1 = pygame.Rect(337,135,40,40) #chim
+    obstacle_r2 = pygame.Rect(317,230,36,48) #cama
+    obstacle_r3 = pygame.Rect(563,167,36,36) #cabeza
+    obstacle_r4 = pygame.Rect(468,200,40,50) #yunque
+    obstacle_r5 = pygame.Rect(345,555,70,50) #mesa
+    obstacle_r6 = pygame.Rect(640,280,34,50) #pilar sup
+    obstacle_r7 = pygame.Rect(640,380,34,50) #pilar inf
+    obstacle_r8 = pygame.Rect(795,250,60,50) #biblio
+    obstacle_r9 = pygame.Rect(795,150,60,50) #biblio
+    obstacle_r10 = pygame.Rect(680,592,36,36) #vasija
+    obstacle_r11 = pygame.Rect(915,150,60,50) #biblio
+    obstacle_r12 = pygame.Rect(915,250,60,50) #biblio
+    obstacle_r13 = pygame.Rect(735,373,36,36) #craneo2
+    obstacle_r14 = pygame.Rect(960,360,48,48) #libros
+
+    obstacles = [obstacle_r1,obstacle_r2,obstacle_r3,obstacle_r4,obstacle_r5,obstacle_r6
+    ,obstacle_r7,obstacle_r8,obstacle_r9,obstacle_r10,obstacle_r11,obstacle_r12,obstacle_r13,obstacle_r14, wall,wall2,wall3,wall4,wall5]
+
+    rect = [hint1_rect]
+    ertime = 0
+    respu = ""
+    respuesta = ""
+    while True:
+        menu_mouse_pos = pygame.mouse.get_pos()
+        timegame = int(round(time.time(),0))
+        dt = timegame - timestart
+        keyP = pygame.key.get_pressed()
+        if minutes < 5:
+
+            if canMove:
+                if (keyP[pygame.K_LEFT]) and not player.checkCollision(obstacles,steps, 0):
+                    player.update(-steps, 0)
+                if (keyP[pygame.K_RIGHT]) and not player.checkCollision(obstacles,-steps, 0):
+                    player.update(steps, 0)
+                if (keyP[pygame.K_UP]) and not player.checkCollision(obstacles,0, steps):
+                    player.update(0, -steps)
+                if (keyP[pygame.K_DOWN]) and not player.checkCollision(obstacles,0, -steps):
+                    player.update(0, steps)
+
+            for event in pygame.event.get(): #recorriendo eventos
+                #print(event)
+                if event.type == pygame.QUIT: #if para saber si se salio el juego
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_BACKSPACE:
+                        respu = respu[:-1]
+                    elif event.key == pygame.K_RETURN:
+                        respu = respu.lower()
+                        respu.replace(" ", "")
+                        if respu == respuesta and (isCollidingHint1 or isCollidingHint2 or isCollidingHint3 or isCollidingLock):
+                            prevPoints+=1
+                            if isCollidingHint1:
+                                print("Respuesta 1 Correcta")
+                                hint1r = True
+                                respuesta = ""
+                            elif isCollidingHint2:
+                                print("Respuesta 2 Correcta")
+                                hint2r = True
+                                respuesta = ""
+                            elif isCollidingHint3:
+                                print("Respuesta 3 Correcta")
+                                hint3r = True
+                                respuesta = ""
+                            elif isCollidingLock:
+                                print("Nivel Completado")
+                                chal1r = True
+                                game_over(nameusr, 2, prevPoints)
+                        else:
+                            if isCollidingHint1 or isCollidingHint2 or isCollidingHint3 or isCollidingLock:
+                                ertime = 100
+                                timestart-=30
+                            
+
+
+                    elif len(respu) <= 500: #cumple length de la textbox
+                        respu += event.unicode
+
+                    if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+                        if player.rect.colliderect(hint1_rect):
+                            if isCollidingHint1:
+                                canMove = True
+                                isCollidingHint1 = False
+                            else:
+                                respuesta = "8"
+                                respu = ""
+                                canMove = False
+                                isCollidingHint1 = True
+                        if player.rect.colliderect(hint2_rect):
+                            if isCollidingHint2:
+                                canMove = True
+                                isCollidingHint2 = False
+                            else:
+                                respu = ""
+                                respuesta  = "5"
+                                canMove = False
+                                isCollidingHint2 = True
+                        if player.rect.colliderect(hint3_rect):
+                            if isCollidingHint3:
+                                canMove = True
+                                isCollidingHint3 = False
+                            else:
+                                respu = ""
+                                respuesta = "4"
+                                canMove = False
+                                isCollidingHint3 = True
+                        if player.rect.colliderect(lock_rect):
+                            if prevPoints >= 6:
+                                if isCollidingLock:
+                                    canMove = True
+                                    isCollidingLock = False
+                                else:
+                                    respu = ""
+                                    respuesta = "11110011010101001011110111001"
+                                    canMove = False
+                                    isCollidingLock = True
+
+                    
+
+            #Cargar gui
+            font = get_font(40)
+            #bg
+            bgl1Scale = pygame.transform.scale(bgl1,(1280,720))
+            screen.blit(bgl1Scale,[0,0])
+            #texto l1
+            textol2 = font.render("Nivel 2",True,(255,255,255))
+            screen.blit(textol2,(60,20))
+            #timer
+            #poner foto
+            if dt >= 60:
+                minutes+=1
+                timestart = int(round(time.time(),0)) - (dt-60)
+        
+            stringtime = str(minutes) + ":" + str(dt)
+            textotimer = font.render(stringtime,True,(255,255,255))
+        
+            screen.blit (textotimer,(650,20))
+
+            #cargar nivel
+            l2Scale = pygame.transform.scale(mapl2,(800,560))
+
+            screen.blit(l2Scale,[250,100])
+
+            #cargar jugador
+            moving_sprites.draw(screen)
+        
+            
+
+
+            #textbox
+            respu_rect = pygame.Rect(525,525,280,40)
+            font = get_font(24)
+            texto = font.render(respu,True,(0,0,0))
+    
+
+
+            
+            #hints
+            hint1 = pygame.transform.scale(minipergamino,(30,30))
+            hint2 = hint1
+            hint3 = hint1
+
+            #points
+            puntosind = pygame.transform.scale(minipergamino,(60,60))
+            screen.blit(puntosind,(60,650))
+            font = get_font(45)
+            textopoints = font.render( "= " + str(prevPoints),True,(255,255,255))
+            screen.blit(textopoints, (120, 645))
+
+            #chal 
+            locks = pygame.transform.scale(lock,(40,40))
+            
+            screen.blit(hint1,hint1_rect)
+            screen.blit(hint2,hint2_rect)
+            screen.blit(hint3,hint3_rect)
+            screen.blit(locks,lock_rect)
+
+
+            if isCollidingHint1:
+                if not hint1r:
+                    screen.blit(minipergamino4,(250,2))  # cambiar las imagenes de los pergaminos aqui, en vez de minipergamino colocar la del hint real
+                    pygame.draw.rect(screen,(0,0,0),respu_rect,5)
+                    screen.blit(texto, (respu_rect.x + 5.6, respu_rect.y + 5.6))
+                else:
+                     screen.blit(res4,(250,2))  # muestra respuesta correcta
+            if isCollidingHint2:
+                if not hint2r:
+                    screen.blit(minipergamino5,(250,2))
+                    pygame.draw.rect(screen,(0,0,0),respu_rect,5)
+                    screen.blit(texto, (respu_rect.x + 5.6, respu_rect.y + 5.6))
+                else:
+                    screen.blit(res5,(250,2))  # muestra respuesta correcta
+                
+            if isCollidingHint3:
+                if not hint3r:
+                    screen.blit(minipergamino6,(250,2))
+                    pygame.draw.rect(screen,(0,0,0),respu_rect,5)
+                    screen.blit(texto, (respu_rect.x + 5.6, respu_rect.y + 5.6))
+                else:
+                    screen.blit(res6,(250,2))  # muestra respuesta correcta
+            if isCollidingLock: #agregar condicion cantidad pistas
+                if not chal1r:
+                    screen.blit(chal2,(250,2))
+                    pygame.draw.rect(screen,(0,0,0),respu_rect,5)
+                    screen.blit(texto, (respu_rect.x + 5.6, respu_rect.y + 5.6))
+    
+            if ertime > 0:
+                screen.blit(error,(500,300))
+                ertime-=1
+
+
+            pygame.display.update()
+            clock.tick(60)
+        else:
+            game_over(nameusr,1,points)
 
 
 def stageclear(nombre, points):
@@ -473,6 +720,8 @@ bgl1 = pygame.image.load("ImagesDiscretas/fl1.png") #fondo nivel 1
 
 mapl1 = pygame.image.load("ImagesDiscretas/l1.png")
 
+mapl2 = pygame.image.load("ImagesDiscretas/l2.png")
+
 botone = pygame.image.load("ImagesDiscretas/botone.png") #cargar boton empezar ...
 
 botons = pygame.image.load("ImagesDiscretas/botons.png") # cargar boton salida...
@@ -489,7 +738,15 @@ minipergamino2 = pygame.image.load("ImagesDiscretas/hint2.png")
 
 minipergamino3 = pygame.image.load("ImagesDiscretas/hint3.png")
 
+minipergamino4 = pygame.image.load("ImagesDiscretas/hint4.png")
+
+minipergamino5 = pygame.image.load("ImagesDiscretas/hint5.png")
+
+minipergamino6 = pygame.image.load("ImagesDiscretas/hint6.png")
+
 chal1 = pygame.image.load("ImagesDiscretas/desafio1.png")
+
+chal2 = pygame.image.load("ImagesDiscretas/desafio2.png")
 
 lock = pygame.image.load("ImagesDiscretas/lock1.png")
 
@@ -498,6 +755,13 @@ res1 = pygame.image.load("ImagesDiscretas/res1.png")
 res2 = pygame.image.load("ImagesDiscretas/res2.png")
 
 res3 = pygame.image.load("ImagesDiscretas/res3.png")
+
+res4 = pygame.image.load("ImagesDiscretas/res4.png")
+
+res5 = pygame.image.load("ImagesDiscretas/res5.png")
+
+res6 = pygame.image.load("ImagesDiscretas/res6.png")
+
 
 error = pygame.image.load("ImagesDiscretas/x.png")
 
